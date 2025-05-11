@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Getting Started: Serving Web Content</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+	<h2>新場遊戲</h2>
+
+	<form action="/big2/add_new_game" method="post">
+		<label for="game_title">命名場次</label>
+		<input type="text" id="game_title" name="game_title">
+		<br>
+		<label for="game_play_num">玩家人數</label>
+		<input type="tel" id="game_play_num" name="game_play_num">
+		<br>
+		<input type="submit" value="送出">
+	</form>
+
+</body>
+
+</html>
