@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 專案的 Maven 設定檔，定義了依賴、編譯、打包方式等 -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion> <!-- 使用 Maven POM 的版本，固定寫法 -->
+
+	<!-- 使用 Spring Boot 官方提供的父專案，簡化依賴版本管理 -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.4.5</version> <!-- Spring Boot 的版本號 -->
+		<relativePath /> <!-- 告訴 Maven 不尋找本地相對父 pom -->
+	</parent>
+
+	<!-- 定義這個專案的基本資訊 -->
+	<groupId>com.GameRecord</groupId> <!-- 專案群組 ID，通常是公司或組織的 domain 反寫 -->
+	<artifactId>GameRecord</artifactId> <!-- 專案的名稱 -->
+	<version>0.0.1-SNAPSHOT</version> <!-- 專案的版本 -->
+	<name>GameRecord</name> <!-- 專案名稱 -->
+	<description>Demo project for Spring Boot</description> <!-- 專案描述 -->
+
+	<!-- 可選：網站連結、授權、開發者、SCM等 -->
+	<url /> <!-- 專案網址，可省略 -->
+	<licenses>
+		<license /> <!-- 授權資訊 -->
+	</licenses>
+	<developers>
+		<developer /> <!-- 開發者資訊 -->
+	</developers>
+	<scm>
+		<connection /> <!-- 原始碼控制連結 -->
+		<developerConnection />
+		<tag />
+		<url />
+	</scm>
+
+	<!-- 指定 Java 的版本 -->
+	<properties>
+		<java.version>17</java.version> <!-- 使用 Java 17 編譯與執行 -->
+	</properties>
+
+	<!-- 專案所需的依賴 -->
+	<dependencies>
+
+		<!-- Spring Boot 的 JDBC 整合模組，支援 Repository、JdbcTemplate 等 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
+		</dependency>
+
+		<!-- 純 JDBC 支援模組（提供 DataSource、JdbcTemplate） -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+
+		<!-- Thymeleaf 模板引擎依賴，支援 .html 的畫面渲染 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+		<!-- Spring Boot Web 應用啟動器，包含 Spring MVC 與嵌入式 Tomcat -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- 熱部署工具，開發時修改程式後自動重啟應用，提升開發效率 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope> <!-- 僅在執行階段生效，不會進入正式部署包 -->
+			<optional>true</optional> <!-- 表示這個依賴是可選的 -->
+		</dependency>
+
+		<!-- MySQL 的 JDBC 驅動程式，用來連接 MySQL 資料庫 -->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope> <!-- 僅在執行階段需要 -->
+		</dependency>
+
+		<!-- 單元測試相關的依賴，包含 JUnit、AssertJ、Mockito 等 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope> <!-- 僅在測試階段使用 -->
+		</dependency>
+	</dependencies>
+
+	<!-- 專案建置（打包）相關設定 -->
+	<build>
+		<plugins>
+			<plugin>
+				<!-- Spring Boot Maven Plugin，用來支援打包成可執行的 jar -->
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
