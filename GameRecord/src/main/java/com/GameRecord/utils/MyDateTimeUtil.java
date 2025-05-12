@@ -9,6 +9,16 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MyDateTimeUtil {
+
+	/**
+	 * 取得現在時間的Timestamp
+	 * 
+	 * @return
+	 */
+	public static Timestamp getNowTimestamp() {
+		return Timestamp.valueOf(LocalDateTime.now());
+	}
+
 	/**
 	 * 取當日日期字串yyyyMMdd
 	 * 

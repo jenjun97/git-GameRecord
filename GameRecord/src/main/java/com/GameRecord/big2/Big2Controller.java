@@ -2,6 +2,7 @@ package com.GameRecord.big2;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/big2")
 public class Big2Controller {
+
+	@Autowired
+	Big2Service big2Service;
 
 	// 導頁
 	@PostMapping("/big2_create_game")
@@ -23,6 +27,7 @@ public class Big2Controller {
 	@PostMapping("big2_add_game_info")
 	public String addNewGame(@RequestParam("game_title") String gameTitle,
 			@RequestParam("players") List<String> players, Model model) {
+		big2Service.addNewGame(gameTitle, players);
 		return "redirect:/index";
 	}
 
