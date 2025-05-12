@@ -4,8 +4,7 @@
 場次列表site list
 	場次名稱
 	新增
-		場次名稱，人數，人名
-	
+		場次名稱，人數，人名, 時間
 
 game info
 	場次名稱
@@ -22,5 +21,5 @@ game info
 
 
 table
-	t_main
-	t_record
+	t_games>>id, type, title, players, datetime
+	t_record>>id, game_no, record

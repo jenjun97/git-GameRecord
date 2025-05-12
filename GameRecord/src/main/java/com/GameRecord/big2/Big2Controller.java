@@ -1,7 +1,9 @@
 package com.GameRecord.big2;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,18 +13,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class Big2Controller {
 
 	// 導頁
-	@GetMapping("/add_game_site")
-	public String add_game_site() {
-		System.out.println("Big2Controller.add_game_site()");
-		return "big2/add_game_site";
+	@PostMapping("/big2_create_game")
+	public String add_game_site(@RequestParam("player_num") int gamePlayNum, Model model) {
+		model.addAttribute("gamePlayNum", gamePlayNum);
+		return "big2/big2_create_game";
 	}
 
 	// 新增遊戲場次
-	@PostMapping("add_new_game")
+	@PostMapping("big2_add_game_info")
 	public String addNewGame(@RequestParam("game_title") String gameTitle,
-			@RequestParam("game_play_num") String gamePlayNum) {
-		System.out.println(gameTitle);
-		System.out.println(gamePlayNum);
-		return "addPlayer";
+			@RequestParam("players") List<String> players, Model model) {
+		return "redirect:/index";
 	}
+
 }
