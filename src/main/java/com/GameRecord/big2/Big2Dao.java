@@ -24,7 +24,7 @@ public class Big2Dao {
 	 * @param datetime
 	 * @return
 	 */
-	public int createBigGame(String type, String title, Timestamp datetime) {
+	public int addNewBig2Game(String type, String title, Timestamp datetime) {
 		String sql = "INSERT INTO t_games (type, title, create_datetime) VALUES (:type, :title, :datetime);";
 
 		Map<String, Object> params = new HashMap<>();
@@ -41,6 +41,5 @@ public class Big2Dao {
 		Number generatedId = keyHolder.getKey();
 		return (generatedId != null) ? generatedId.intValue() : -1;
 	}
-	
 
 }

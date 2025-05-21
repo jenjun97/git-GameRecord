@@ -7,3 +7,7 @@
 /GameRecord/.settings
 /GameRecord/.classpath
 /GameRecord/.project
+/.settings
+/target
+/.classpath
+/.project

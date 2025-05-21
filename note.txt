@@ -1,5 +1,4 @@
 遊戲列表gamer list
-	大老二
 
 場次列表site list
 	場次名稱
@@ -19,7 +18,6 @@ game info
 	(防呆：只會有一家沒有分數)
 	
 
-
 table
-	t_games>>id, type, title, players, datetime
-	t_record>>id, game_no, record
+	t_big2_games		>>	id, type, title, players, datetime
+	t_big2_record	>>	id, no_num, record, fk_games_id

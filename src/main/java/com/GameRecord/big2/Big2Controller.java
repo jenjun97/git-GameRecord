@@ -25,9 +25,9 @@ public class Big2Controller {
 
 	// 新增遊戲場次
 	@PostMapping("big2_add_game_info")
-	public String addNewGame(@RequestParam("game_title") String gameTitle,
+	public String addNewBig2Game(@RequestParam("game_title") String gameTitle,
 			@RequestParam("players") List<String> players, Model model) {
-		big2Service.addNewGame(gameTitle, players);
+		big2Service.addNewBig2Game(gameTitle, players);
 		return "redirect:/index";
 	}
 
