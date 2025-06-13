@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+	<h2>分數列表</h2>
+
+	<!-- 表單送到 /big2/add_players -->
+	<form th:action="@{/big2/add_player}" method="post">
+
+		<!-- 動態產生欄位 -->
+		<div>
+<!-- 			<label>請輸入玩家名稱：</label> <br /> -->
+<!-- 			<div th:each="i : ${#numbers.sequence(1, playerNum)}"> -->
+<!-- 				<label th:text="'玩家 ' + ${i} + '：'"></label> <input type="text" -->
+<!-- 					name="playerName" placeholder="請輸入玩家名稱" /> <br /> -->
+<!-- 			</div> -->
+		</div>
+
+		<br />
+<!-- 		<button type="submit">送出</button> -->
+
+	</form>
+</body>
+
+</html>

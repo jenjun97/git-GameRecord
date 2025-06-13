@@ -16,24 +16,16 @@ public class Big2Dao {
 	@Autowired
 	private NamedParameterJdbcTemplate jdbc;
 
-	/**
-	 * 新增遊戲場次
-	 * 
-	 * @param type
-	 * @param title
-	 * @param datetime
-	 * @return
-	 */
-	public int addNewBig2Game(String type, String title, Timestamp datetime) {
-		String sql = "INSERT INTO t_games (type, title, create_datetime) VALUES (:type, :title, :datetime);";
+	// 新增場次，並取得場次id
+	public int addBig2Game(String playerName, String modeName, Timestamp dateTime) {
+		String sql = "INSERT INTO t_desk (player_name, mode_name, datetime) VALUES (:playerName, :modeName, :dateTime);";
 
 		Map<String, Object> params = new HashMap<>();
-		params.put("type", type);
-		params.put("title", title);
-		params.put("datetime", datetime);
+		params.put("playerName", playerName);
+		params.put("modeName", modeName);
+		params.put("dateTime", dateTime);
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-
 		jdbc.update(sql, new MapSqlParameterSource(params), keyHolder, new String[] { "id" } // 指定自增主鍵欄位名稱
 		);
 

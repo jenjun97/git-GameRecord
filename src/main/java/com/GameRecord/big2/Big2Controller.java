@@ -14,20 +14,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class Big2Controller {
 
 	@Autowired
-	Big2Service big2Service;
+//	Big2Service big2Service;
+	Big2AddPlayerService big2AddPlayerService;
 
 	// 導頁
-	@PostMapping("/big2_create_game")
-	public String add_game_site(@RequestParam("player_num") int gamePlayNum, Model model) {
-		model.addAttribute("gamePlayNum", gamePlayNum);
-		return "big2/big2_create_game";
+	@PostMapping("/new_players")
+	public String add_game_site(@RequestParam("player_num") int playerNum, Model model) {
+		model.addAttribute("playerNum", playerNum);
+		return "big2/input_player";
 	}
 
-	// 新增遊戲場次
-	@PostMapping("big2_add_game_info")
-	public String addNewBig2Game(@RequestParam("game_title") String gameTitle,
-			@RequestParam("players") List<String> players, Model model) {
-		big2Service.addNewBig2Game(gameTitle, players);
+	// 新增場次及玩家
+	@PostMapping("/add_player")
+	public String addNewBig2Game(@RequestParam("playerName") List<String> nameList, Model model) {
+		try {
+			int deskId = big2AddPlayerService.addBig2Game(nameList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "redirect:/index";
 	}
 

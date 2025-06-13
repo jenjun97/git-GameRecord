@@ -16,6 +16,6 @@ public class IndexController {
 	// 大老二導頁
 	@GetMapping("/big2")
 	public String big2() {
-		return "big2/big2_game_list";
+		return "big2/big2_list";
 	}
 }
