@@ -11,6 +11,13 @@
 
 	<!-- 表單送到 /big2/add_players -->
 	<form th:action="@{/big2/add_player}" method="post">
+	
+	<!-- 場次名稱 -->
+		<div>
+			<label>請輸入場次名稱：</label> <br />
+			<input type="text" name="desk_name" placeholder="請輸入場次名稱" /> <br />
+			<p>例：集客、九份</p>
+		</div>
 
 		<!-- 動態產生玩家輸入欄位 -->
 		<div>
