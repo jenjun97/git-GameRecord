@@ -34,4 +34,30 @@ public class Big2Dao {
 		return (generatedId != null) ? generatedId.intValue() : -1;
 	}
 
+	/**
+	 * 新增場次
+	 * 
+	 * @param deskUuid
+	 * @param deskName
+	 * @param kindName
+	 * @param dateTime
+	 * @return
+	 */
+	public int addDesk(String deskUuid, String deskName, String kindName, Timestamp dateTime) {
+		String sql = "INSERT INTO t_desk (desk_uuid, desk_name, kind_name, datetime) VALUES (:deskUuid, :deskName, :kindName, :dateTime);";
+		Map<String, Object> params = new HashMap<>();
+		params.put("deskUuid", deskUuid);
+		params.put("deskName", deskName);
+		params.put("kindName", kindName);
+		params.put("dateTime", dateTime);
+
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		jdbc.update(sql, new MapSqlParameterSource(params), keyHolder, new String[] { "id" } // 指定自增主鍵欄位名稱
+		);
+
+		// 取出新增的id值，如果有錯則回-1
+		Number generatedId = keyHolder.getKey();
+		return (generatedId != null) ? generatedId.intValue() : -1;
+	}
+
 }
