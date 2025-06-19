@@ -8,47 +8,52 @@
 
 <body>
 	<!-- ───────────────── ① 總分區 ───────────────── -->
-	<h4 class="section-title">總分</h4>
 	<table border=1>
 	    <thead>
 	        <tr>
 	            <th>姓名</th>
-	            <th th:each="p : *{scoreboardResponseDto.playerNameList}" th:text="${p}">Nam1</th>
+	            <th th:each="p : *{scoreboardResponseDto.playerNameList}" th:text="${p}">name</th>
 	        </tr>
 	    </thead>
 	    <tbody>
 	        <tr>
-	            <td>總分</td>
-	            <td th:each="sumScore : *{sumScoreList}"
-	                th:text="*{sumScore} ?: 0">a</td>
+	            <td>目前總分</td>
+				<!-- 有資料的情況 -->
+				   <td th:each="sumScore : *{sumScoreList}"
+				       th:text="${sumScore}" style="width:4rem;">0</td>
+
+				   <!-- 無資料時補 0（依玩家人數） -->
+				   <td th:if="*{sumScoreList == null or #lists.isEmpty(sumScoreList)}"
+				       th:each="p : *{scoreboardResponseDto.playerNameList}"
+				       th:text="0" style="width:4rem;">0</td>
 	        </tr>
 	    </tbody>
 	</table>
 
 	<!-- ───────────────── ② 新增比分區 ───────────────── -->
-<!--	<h4 class="section-title">新增比分 (只要輸入負分)</h4>-->
-<!--	<form th:action="@{/big2/add_score}" method="post">-->
-<!--	    <input type="hidden" name="uuid" th:value="*{scoreboardResponseDto.uuid}" />-->
-<!--	    <table>-->
-<!--	        <thead>-->
-<!--	            <tr>-->
-<!--	                <th>姓名</th>-->
-<!--	                <th th:each="p : *{scoreboardResponseDto.players}" th:text="${p}">Nam1</th>-->
-<!--	            </tr>-->
-<!--	        </thead>-->
-<!--	        <tbody>-->
-<!--	            <tr>-->
-<!--	                <td>輸幾分</td>-->
-<!--	                <td th:each="p,idx : *{players}">-->
-<!--	                    <input type="number" name="scores"-->
-<!--	                           step="1" placeholder="負分"-->
-<!--	                           style="width:4rem;">-->
-<!--	                </td>-->
-<!--	            </tr>-->
-<!--	        </tbody>-->
-<!--	    </table>-->
-<!--	    <button type="submit" class="btn btn-primary mt-2">送出</button>-->
-<!--	</form>-->
+	<h4 class="section-title">新增分數 (只要輸入負分)</h4>
+	<form th:action="@{/big2/add_score}" method="post">
+	    <input type="hidden" name="uuid" th:value="*{scoreboardResponseDto.deskUuid}" />
+	    <table border=1>
+	        <thead>
+	            <tr>
+	                <th>姓名</th>
+	                <th th:each="p : *{scoreboardResponseDto.playerNameList}" th:text="${p}">name</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr>
+	                <td>輸分</td>
+	                <td th:each="p,idx : *{scoreboardResponseDto.playerNameList}">
+	                    <input type="phone" name="idx"
+	                           step="1" placeholder="輸分"
+	                           style="width:4rem;">
+	                </td>
+	            </tr>
+	        </tbody>
+	    </table>
+	    <button type="submit" class="btn btn-primary mt-2">送出</button>
+	</form>
 
 	<!-- ───────────────── ③ 每把紀錄區 ───────────────── -->
 <!--	<h4 class="section-title">每把紀錄</h4>-->

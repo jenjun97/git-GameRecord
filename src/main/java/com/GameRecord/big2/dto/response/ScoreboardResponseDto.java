@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ScoreboardResponseDto {
+	// 場次識別碼
+	public String deskUuid;
 
 	// query玩家姓名
 	public List<String> playerNameList;

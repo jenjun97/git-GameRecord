@@ -24,7 +24,7 @@ public class Big2Service {
 	Big2Dao big2Dao;
 
 	// 新增場次及玩家
-	public ScoreboardResponseDto addBig2Game(AddPlayerRequestDto requestDto) throws Exception {
+	public String addBig2Game(AddPlayerRequestDto requestDto) throws Exception {
 		// 防呆
 		validates(requestDto.getPlayerName());
 
@@ -35,6 +35,17 @@ public class Big2Service {
 		// 新增玩家
 		addPlayers(deskId, requestDto.getPlayerName());
 
+		return deskUuid;
+
+	}
+
+	/**
+	 * 列出現在所有的比分
+	 * 
+	 * @param deskUuid
+	 * @return
+	 */
+	public ScoreboardResponseDto showRecordList(String deskUuid) {
 		// query玩家姓名
 		List<String> playerNameList = queryPlayerName(deskUuid);
 
@@ -46,10 +57,25 @@ public class Big2Service {
 
 		// 初始化返回物件
 		ScoreboardResponseDto scoreboardResponseDto = new ScoreboardResponseDto();
+		scoreboardResponseDto.deskUuid = deskUuid;
 		scoreboardResponseDto.playerNameList = playerNameList;
 		scoreboardResponseDto.roundScoreList = roundScoreList;
 		scoreboardResponseDto.sumScoreList = sumScoreList;
 		return scoreboardResponseDto;
+
+	}
+
+	/**
+	 * 驗證輸入玩家人數
+	 * @param playerNum
+	 * @return
+	 */
+	public boolean validPlayerNum(int playerNum) {
+		int big2PlayerMax = Integer.parseInt(MySourceProperties.get("big2.player.max"));
+		if (playerNum <= 0 || playerNum > big2PlayerMax) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -58,9 +84,8 @@ public class Big2Service {
 	 * @param deskUuid
 	 * @return
 	 */
-	public List<Integer> querySumScore(String deskUuid) {
+	private List<Integer> querySumScore(String deskUuid) {
 		List<Integer> sumScoreList = big2Dao.querySumScore(deskUuid);
-		
 		return sumScoreList;
 	}
 
@@ -121,7 +146,7 @@ public class Big2Service {
 	 * @return
 	 */
 	private int addDesk(String deskUuid, AddPlayerRequestDto requestDto) {
-		int deskId = big2Dao.addDesk(deskUuid, requestDto.getDesk_name(), MySourceProperties.get("mode.big2"),
+		int deskId = big2Dao.addDesk(deskUuid, requestDto.getDesk_name(), MySourceProperties.get("kind.big2"),
 				MyDateTimeUtil.getNowTimestamp());
 		return deskId;
 	}
