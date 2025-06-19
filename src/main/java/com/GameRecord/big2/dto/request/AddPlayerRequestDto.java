@@ -3,10 +3,13 @@ package com.GameRecord.big2.dto.request;
 import java.util.List;
 
 public class AddPlayerRequestDto {
-	private String desk_name; // 對應 form 的 input name
-	private List<String> playerName; // 對應 form 的多個玩家名稱欄位
+	// 場次名稱
+	private String desk_name;
 
-	// Getter & Setter
+	// 玩家姓名
+	private List<String> playerName;
+
+	// set & get
 	public String getDesk_name() {
 		return desk_name;
 	}

@@ -2,37 +2,23 @@ package com.GameRecord.big2;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.GameRecord.big2.dto.response.RoundScoreDto;
+
 @Repository
 public class Big2Dao {
 	@Autowired
 	private NamedParameterJdbcTemplate jdbc;
-
-	// 新增場次，並取得場次id
-	public int addBig2Game(String playerName, String modeName, Timestamp dateTime) {
-		String sql = "INSERT INTO t_desk (player_name, mode_name, datetime) VALUES (:playerName, :modeName, :dateTime);";
-
-		Map<String, Object> params = new HashMap<>();
-		params.put("playerName", playerName);
-		params.put("modeName", modeName);
-		params.put("dateTime", dateTime);
-
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		jdbc.update(sql, new MapSqlParameterSource(params), keyHolder, new String[] { "id" } // 指定自增主鍵欄位名稱
-		);
-
-		// 取出新增的id值，如果有錯則回-1
-		Number generatedId = keyHolder.getKey();
-		return (generatedId != null) ? generatedId.intValue() : -1;
-	}
 
 	/**
 	 * 新增場次
@@ -58,6 +44,65 @@ public class Big2Dao {
 		// 取出新增的id值，如果有錯則回-1
 		Number generatedId = keyHolder.getKey();
 		return (generatedId != null) ? generatedId.intValue() : -1;
+	}
+
+	/**
+	 * 新增玩家
+	 * 
+	 * @param deskId
+	 * @param playerNum
+	 * @param playerName
+	 */
+	public void addPlayers(int deskId, int playerNum, String playerName) {
+		String sql = "INSERT INTO t_players ( player_num, player_name, fk_desk_id) VALUES( :playerNum, :playerName, :deskId);";
+
+		Map<String, Object> params = new HashMap<>();
+		params.put("deskId", deskId);
+		params.put("playerNum", playerNum);
+		params.put("playerName", playerName);
+
+		jdbc.update(sql, params);
+	}
+
+	/**
+	 * query玩家每把分數
+	 * 
+	 * @param deskUuid
+	 * @return
+	 */
+	public List<RoundScoreDto> queryScore(String deskUuid) {
+		String sql = "SELECT ts.round_no, tp.player_num, ts.score\r\n" + "FROM t_score ts\r\n"
+				+ "join t_players tp on tp.id = ts.fk_player_id \r\n" + "join t_desk td on td.id =tp.fk_desk_id\r\n"
+				+ "where td.desk_uuid =:deskUuid \r\n" + "order by ts.round_no , ts.fk_player_id";
+		Map<String, Object> paramMap = new HashMap();
+		paramMap.put("deskUuid", deskUuid);
+
+		List<RoundScoreDto> query = jdbc.query(sql, paramMap, BeanPropertyRowMapper.newInstance(RoundScoreDto.class));
+		return query;
+	}
+
+	// query玩家姓名
+	public List<String> queryPlayerName(String deskUuid) {
+		String sql = "select tp.player_name\r\n" + "from t_players tp \r\n"
+				+ "join t_desk td on td.id = tp.fk_desk_id\r\n" + "where td.desk_uuid = :deskUuid \r\n"
+				+ "order by tp.player_num";
+		Map<String, Object> paramMap = new HashMap();
+		paramMap.put("deskUuid", deskUuid);
+
+		List<String> query = jdbc.queryForList(sql, paramMap, String.class);
+		return query;
+	}
+
+	// query玩家總數
+	public List<Integer> querySumScore(String deskUuid) {
+		String sql = "SELECT SUM(ts.score) AS total_score\r\n" + "FROM t_score ts\r\n"
+				+ "JOIN t_players tp ON tp.id = ts.fk_player_id\r\n" + "JOIN t_desk td ON td.id = tp.fk_desk_id\r\n"
+				+ "WHERE td.desk_uuid = :deskUuid \r\n" + "GROUP BY tp.player_num\r\n" + "ORDER BY tp.player_num";
+		Map<String, Object> paramMap = new HashMap();
+		paramMap.put("deskUuid", deskUuid);
+
+		List<Integer> query = jdbc.queryForList(sql, paramMap, Integer.class);
+		return query;
 	}
 
 }

@@ -7,24 +7,68 @@
 </head>
 
 <body>
-	<h2>分數列表</h2>
+	<!-- ───────────────── ① 總分區 ───────────────── -->
+	<h4 class="section-title">總分</h4>
+	<table border=1>
+	    <thead>
+	        <tr>
+	            <th>姓名</th>
+	            <th th:each="p : *{scoreboardResponseDto.playerNameList}" th:text="${p}">Nam1</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr>
+	            <td>總分</td>
+	            <td th:each="sumScore : *{sumScoreList}"
+	                th:text="*{sumScore} ?: 0">a</td>
+	        </tr>
+	    </tbody>
+	</table>
 
-	<!-- 表單送到 /big2/add_players -->
-	<form th:action="@{/big2/add_player}" method="post">
+	<!-- ───────────────── ② 新增比分區 ───────────────── -->
+<!--	<h4 class="section-title">新增比分 (只要輸入負分)</h4>-->
+<!--	<form th:action="@{/big2/add_score}" method="post">-->
+<!--	    <input type="hidden" name="uuid" th:value="*{scoreboardResponseDto.uuid}" />-->
+<!--	    <table>-->
+<!--	        <thead>-->
+<!--	            <tr>-->
+<!--	                <th>姓名</th>-->
+<!--	                <th th:each="p : *{scoreboardResponseDto.players}" th:text="${p}">Nam1</th>-->
+<!--	            </tr>-->
+<!--	        </thead>-->
+<!--	        <tbody>-->
+<!--	            <tr>-->
+<!--	                <td>輸幾分</td>-->
+<!--	                <td th:each="p,idx : *{players}">-->
+<!--	                    <input type="number" name="scores"-->
+<!--	                           step="1" placeholder="負分"-->
+<!--	                           style="width:4rem;">-->
+<!--	                </td>-->
+<!--	            </tr>-->
+<!--	        </tbody>-->
+<!--	    </table>-->
+<!--	    <button type="submit" class="btn btn-primary mt-2">送出</button>-->
+<!--	</form>-->
 
-		<!-- 動態產生欄位 -->
-		<div>
-<!-- 			<label>請輸入玩家名稱：</label> <br /> -->
-<!-- 			<div th:each="i : ${#numbers.sequence(1, playerNum)}"> -->
-<!-- 				<label th:text="'玩家 ' + ${i} + '：'"></label> <input type="text" -->
-<!-- 					name="playerName" placeholder="請輸入玩家名稱" /> <br /> -->
-<!-- 			</div> -->
-		</div>
+	<!-- ───────────────── ③ 每把紀錄區 ───────────────── -->
+<!--	<h4 class="section-title">每把紀錄</h4>-->
+<!--	<table>-->
+<!--	    <thead>-->
+<!--	        <tr>-->
+<!--	            <th>姓名</th>-->
+<!--	            <th th:each="p : *{players}" th:text="${p}">Nam1</th>-->
+<!--	        </tr>-->
+<!--	    </thead>-->
+<!--	    <tbody>-->
+<!--	         rounds 為 List<RoundScoreDto> -->
+<!--	        <tr th:each="r : *{rounds}">-->
+<!--	            <td th:text="${r.roundNo} + ' 把'">1 把</td>-->
+<!--	            <td th:each="p : *{players}"-->
+<!--	                th:text="${r.scores[p]} ?: ''"></td>-->
+<!--	        </tr>-->
+<!--	    </tbody>-->
+<!--	</table>-->
 
-		<br />
-<!-- 		<button type="submit">送出</button> -->
-
-	</form>
 </body>
 
 </html>

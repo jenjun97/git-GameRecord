@@ -10,10 +10,10 @@ CREATE TABLE `t_desk` (
   `kind_name` varchar(100) DEFAULT NULL,
   `datetime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- games_score.t_player definition
-CREATE TABLE `t_player` (
+-- games_score.t_players definition
+CREATE TABLE `t_players` (
   `id` int NOT NULL AUTO_INCREMENT,
   `player_num` int DEFAULT NULL,
   `player_name` varchar(100) DEFAULT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE `t_player` (
 -- games_score.t_score definition
 CREATE TABLE `t_score` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `run_index` int DEFAULT NULL,
+  `round_no` int DEFAULT NULL,
   `fk_player_id` int DEFAULT NULL,
   `score` int DEFAULT NULL,
   `datetime` datetime DEFAULT NULL,

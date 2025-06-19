@@ -1,0 +1,20 @@
+package com.GameRecord.big2.dto.response;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public class ScoreboardResponseDto {
+
+	// query玩家姓名
+	public List<String> playerNameList;
+	
+	// query玩家每把分數
+	public List<List<Integer>> roundScoreList;
+	
+	// query玩家總分
+	public List<Integer> sumScoreList;
+	
+	
+
+}

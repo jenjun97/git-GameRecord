@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.GameRecord.big2.dto.request.AddPlayerRequestDto;
+import com.GameRecord.big2.dto.response.ScoreboardResponseDto;
 
 @Controller
 @RequestMapping("/big2")
 public class Big2Controller {
 
 	@Autowired
-//	Big2Service big2Service;
-	Big2AddPlayerService big2AddPlayerService;
+	Big2Service big2Service;
 
 	// 導頁
 	@PostMapping("/new_players")
@@ -29,11 +29,14 @@ public class Big2Controller {
 	@PostMapping("/add_player")
 	public String addNewBig2Game(@ModelAttribute AddPlayerRequestDto requestDto, Model model) {
 		try {
-			int deskId = big2AddPlayerService.addBig2Game(requestDto);
+			ScoreboardResponseDto scoreboardResponseDto = big2Service.addBig2Game(requestDto);
+			model.addAttribute("scoreboardResponseDto", scoreboardResponseDto);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "big2/error";
 		}
-		return "redirect:/index";
+		return "big2/record_list";
 	}
 
+//	return "redirect:/index";
 }
