@@ -32,7 +32,7 @@
 	            <td th:text="${desk.deskUuid}">UUID</td>
 	            <td th:text="${desk.datetime}">2025-06-19 22:00</td>
 	            <td>
-	                <form th:action="@{/big2/record_list/{uuid}(uuid=${desk.deskUuid})}" method="get">
+	                <form th:action="@{/big2/score_list/{uuid}(uuid=${desk.deskUuid})}" method="get">
 	                    <button type="submit">繼續</button>
 	                </form>
 	            </td>

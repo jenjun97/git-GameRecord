@@ -81,8 +81,7 @@ public class Big2Service {
 		scoreboardResponseDto.roundScoreList = queryScore(deskUuid);
 
 		// query玩家總分
-		int playerNum = scoreboardResponseDto.playerNameList.size();
-		scoreboardResponseDto.sumScoreList = initialSumScore(playerNum);
+		scoreboardResponseDto.sumScoreList = querySumScore(deskUuid);
 
 		return scoreboardResponseDto;
 
@@ -149,20 +148,6 @@ public class Big2Service {
 			nextRoundNum = lastRoundNum + 1;
 		}
 		return nextRoundNum;
-	}
-
-	/**
-	 * 初始化總分列表
-	 * 
-	 * @param num
-	 * @return
-	 */
-	private List<Integer> initialSumScore(int num) {
-		List<Integer> initialList = new ArrayList();
-		for (int i = 0; i < num; i++) {
-			initialList.add(0);
-		}
-		return initialList;
 	}
 
 	/**

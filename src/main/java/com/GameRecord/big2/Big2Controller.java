@@ -75,5 +75,15 @@ public class Big2Controller {
 		big2Service.addScore(addScoreRequestDto);
 		return "redirect:/big2/score_list/" + addScoreRequestDto.getDeskUuid();
 	}
+	
+	// 修改比分
+	@PostMapping("/fix_score")
+	public String fixScore(@RequestParam("deskUuid") String deskUuid, @RequestParam("roundNum") int roundNum, Model model) {
+		System.out.println(deskUuid);
+		System.out.println(roundNum);
+		return "redirect:/big2/score_list/" + deskUuid;
+	}
+	
+	
 
 }
