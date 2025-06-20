@@ -11,14 +11,14 @@
 
 	<!-- 表單送到 /big2/add_players -->
 	<form th:action="@{/big2/add_player}" method="post">
-
-		<!-- 場次名稱 -->
+	
+		<!-- 場次資料 -->
 		<div>
-			<label>請輸入場次名稱：</label> <br /> <input type="text" name="desk_name"
-				placeholder="請輸入場次名稱" />
-			<div>例：集客、九份</div>
+			<label for="deskName">請輸入場地名稱：</label> <br />
+				<input type="text" name="deskName" id="deskName" placeholder="請輸入本場名稱" /> <br />
+			</div>
 		</div>
-		<br />
+
 		<!-- 動態產生玩家輸入欄位 -->
 		<div>
 			<label>請輸入玩家名稱：</label> <br />
@@ -31,11 +31,10 @@
 		<br />
 		<button type="submit">送出</button>
 		<br />
-		<button type="button">
-			<a th:href="@{/index}">返回</a>
-		</button>
-
 	</form>
+	<button type="button">
+		<a th:href="@{/index}">返回</a>
+	</button>
 </body>
 
 </html>

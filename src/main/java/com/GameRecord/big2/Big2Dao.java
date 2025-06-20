@@ -13,7 +13,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import com.GameRecord.big2.dto.response.RoundScoreDto;
+import com.GameRecord.big2.dto.response.HisDeskResponseDto;
+import com.GameRecord.big2.dto.response.RoundScoreResponseDto;
 
 @Repository
 public class Big2Dao {
@@ -70,14 +71,15 @@ public class Big2Dao {
 	 * @param deskUuid
 	 * @return
 	 */
-	public List<RoundScoreDto> queryScore(String deskUuid) {
+	public List<RoundScoreResponseDto> queryScore(String deskUuid) {
 		String sql = "SELECT ts.round_no, tp.player_num, ts.score\r\n" + "FROM t_score ts\r\n"
 				+ "join t_players tp on tp.id = ts.fk_player_id \r\n" + "join t_desk td on td.id =tp.fk_desk_id\r\n"
 				+ "where td.desk_uuid =:deskUuid \r\n" + "order by ts.round_no , ts.fk_player_id";
 		Map<String, Object> paramMap = new HashMap();
 		paramMap.put("deskUuid", deskUuid);
 
-		List<RoundScoreDto> query = jdbc.query(sql, paramMap, BeanPropertyRowMapper.newInstance(RoundScoreDto.class));
+		List<RoundScoreResponseDto> query = jdbc.query(sql, paramMap,
+				BeanPropertyRowMapper.newInstance(RoundScoreResponseDto.class));
 		return query;
 	}
 
@@ -103,6 +105,21 @@ public class Big2Dao {
 
 		List<Integer> query = jdbc.queryForList(sql, paramMap, Integer.class);
 		return query;
+	}
+	
+	// query歷史場次
+	public List<HisDeskResponseDto> queryHisDesk(String kindName){
+		String sql = "SELECT desk_uuid, desk_name, `datetime` \r\n"
+				+ "FROM t_desk\r\n"
+				+ "where kind_name = :kindName \r\n"
+				+ "order by ID;";
+		Map<String, Object> paramMap = new HashMap();
+		paramMap.put("kindName", kindName);
+		
+		List<HisDeskResponseDto> query = jdbc.query(sql, paramMap,
+				BeanPropertyRowMapper.newInstance(HisDeskResponseDto.class));
+		return query;
+		
 	}
 
 }

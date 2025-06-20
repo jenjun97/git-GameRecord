@@ -1,8 +1,6 @@
 package com.GameRecord.big2.dto.response;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ScoreboardResponseDto {
 	// 場次識別碼

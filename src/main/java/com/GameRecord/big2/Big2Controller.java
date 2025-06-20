@@ -1,6 +1,7 @@
 package com.GameRecord.big2;
 
-import com.GameRecord.index.IndexController;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.GameRecord.big2.dto.request.AddPlayerRequestDto;
+import com.GameRecord.big2.dto.request.AddRecordRequestDto;
+import com.GameRecord.big2.dto.response.HisDeskResponseDto;
 import com.GameRecord.big2.dto.response.ScoreboardResponseDto;
 
 @Controller
@@ -21,9 +24,17 @@ public class Big2Controller {
 	@Autowired
 	Big2Service big2Service;
 
-	// 導頁
-	@PostMapping("/new_players")
-	public String add_game_site(@RequestParam(value = "player_num", required = false, defaultValue = "0") int playerNum,
+	// 老大二首頁，列出歷史場次
+	@GetMapping("/big2_index")
+	public String big2List(Model model) {
+		List<HisDeskResponseDto> hisDeskResponseDto = big2Service.queryHisDesk();
+		model.addAttribute("hisDeskResponseDto", hisDeskResponseDto);
+		return "big2/big2_index";
+	}
+
+	// 新增玩家人數
+	@PostMapping("/new_big2")
+	public String add_game_site(@RequestParam(value = "playerNum", required = false, defaultValue = "0") int playerNum,
 			Model model) {
 		try {
 			if (!big2Service.validPlayerNum(playerNum)) {
@@ -34,17 +45,15 @@ public class Big2Controller {
 			e.printStackTrace();
 			return "big2/error";
 		}
-		return "big2/input_player";
+		return "big2/new_big2";
 	}
 
-	// 新增場次及玩家
+	// 新增玩家姓名
 	@PostMapping("/add_player")
 	public String addNewBig2Game(@ModelAttribute AddPlayerRequestDto requestDto, Model model) {
-		ScoreboardResponseDto scoreboardResponseDto = null;
 		String deskUuid = null;
 		try {
 			deskUuid = big2Service.addBig2Game(requestDto);
-			model.addAttribute("scoreboardResponseDto", scoreboardResponseDto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "big2/error";
@@ -56,16 +65,15 @@ public class Big2Controller {
 	@GetMapping("/record_list/{deskUuid}")
 	public String showRecordList(@PathVariable String deskUuid, Model model) {
 		ScoreboardResponseDto scoreboardResponseDto = big2Service.showRecordList(deskUuid);
-		model.addAttribute("", scoreboardResponseDto);
+		model.addAttribute("scoreboardResponseDto", scoreboardResponseDto);
 		return "big2/record_list";
 	}
 
 	// 增加比分
-	@PostMapping("/add_record")
-	public String addRecord(@PathVariable String deskUuid, Model model) {
-
-		return "redirect:/big2/record_list/" + deskUuid;
+	@PostMapping("/add_score")
+	public String addRecord(@ModelAttribute AddRecordRequestDto addRecordRequestDto, Model model) {
+		System.out.println("Big2Controller.addRecord()");
+		return "redirect:/big2/record_list/" + addRecordRequestDto.getDeskUuid();
 	}
 
-//	return "redirect:/index";
 }

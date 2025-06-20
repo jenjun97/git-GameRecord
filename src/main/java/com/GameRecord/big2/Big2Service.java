@@ -1,6 +1,5 @@
 package com.GameRecord.big2;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -9,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.GameRecord.big2.dto.request.AddPlayerRequestDto;
-import com.GameRecord.big2.dto.response.RoundScoreDto;
+import com.GameRecord.big2.dto.response.HisDeskResponseDto;
+import com.GameRecord.big2.dto.response.RoundScoreResponseDto;
 import com.GameRecord.big2.dto.response.ScoreboardResponseDto;
 import com.GameRecord.utils.MyDateTimeUtil;
 import com.GameRecord.utils.MySourceProperties;
@@ -46,27 +46,28 @@ public class Big2Service {
 	 * @return
 	 */
 	public ScoreboardResponseDto showRecordList(String deskUuid) {
-		// query玩家姓名
-		List<String> playerNameList = queryPlayerName(deskUuid);
-
-		// query玩家每把分數
-		List<List<Integer>> roundScoreList = queryScore(deskUuid);
-
-		// query玩家總數
-		List<Integer> sumScoreList = querySumScore(deskUuid);
-
 		// 初始化返回物件
 		ScoreboardResponseDto scoreboardResponseDto = new ScoreboardResponseDto();
+
 		scoreboardResponseDto.deskUuid = deskUuid;
-		scoreboardResponseDto.playerNameList = playerNameList;
-		scoreboardResponseDto.roundScoreList = roundScoreList;
-		scoreboardResponseDto.sumScoreList = sumScoreList;
+
+		// query玩家姓名
+		scoreboardResponseDto.playerNameList = queryPlayerName(deskUuid);
+
+		// query玩家每把分數
+		scoreboardResponseDto.roundScoreList = queryScore(deskUuid);
+
+		// query玩家總分
+		int playerNum = scoreboardResponseDto.playerNameList.size();
+		scoreboardResponseDto.sumScoreList = initialSumScore(playerNum);
+
 		return scoreboardResponseDto;
 
 	}
 
 	/**
 	 * 驗證輸入玩家人數
+	 * 
 	 * @param playerNum
 	 * @return
 	 */
@@ -76,6 +77,31 @@ public class Big2Service {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * query歷史場次
+	 * 
+	 * @return
+	 */
+	public List<HisDeskResponseDto> queryHisDesk() {
+		String kindStr = MySourceProperties.get("kind.big2");
+		List<HisDeskResponseDto> queryHisDesk = big2Dao.queryHisDesk(kindStr);
+		return queryHisDesk;
+	}
+
+	/**
+	 * 初始化總分列表
+	 * 
+	 * @param num
+	 * @return
+	 */
+	private List<Integer> initialSumScore(int num) {
+		List<Integer> initialList = new ArrayList();
+		for (int i = 0; i < num; i++) {
+			initialList.add(0);
+		}
+		return initialList;
 	}
 
 	/**
@@ -106,14 +132,14 @@ public class Big2Service {
 	 */
 	private List<List<Integer>> queryScore(String deskUuid) {
 		// query場次裡所有的歷史分數
-		List<RoundScoreDto> queryDtoList = big2Dao.queryScore(deskUuid);
+		List<RoundScoreResponseDto> queryDtoList = big2Dao.queryScore(deskUuid);
 
 		// 二維list放入每把分數
 		List<List<Integer>> roundScoreList = new ArrayList();
 
 		// 把同樣的一把分數，建list放進去
 		int roundNo = 0;
-		for (RoundScoreDto queryDto : queryDtoList) {
+		for (RoundScoreResponseDto queryDto : queryDtoList) {
 			if (queryDto.getRoundNo() != roundNo) {
 				roundNo = queryDto.getRoundNo();
 				roundScoreList.add(new ArrayList());
@@ -146,7 +172,7 @@ public class Big2Service {
 	 * @return
 	 */
 	private int addDesk(String deskUuid, AddPlayerRequestDto requestDto) {
-		int deskId = big2Dao.addDesk(deskUuid, requestDto.getDesk_name(), MySourceProperties.get("kind.big2"),
+		int deskId = big2Dao.addDesk(deskUuid, requestDto.getDeskName(), MySourceProperties.get("kind.big2"),
 				MyDateTimeUtil.getNowTimestamp());
 		return deskId;
 	}

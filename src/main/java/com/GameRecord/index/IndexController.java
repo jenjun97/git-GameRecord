@@ -14,8 +14,8 @@ public class IndexController {
 	}
 
 	// 大老二導頁
-	@GetMapping("/big2")
+	@GetMapping("/big2_index")
 	public String big2() {
-		return "big2/big2_list";
+		return "redirect:/big2/big2_index";
 	}
 }

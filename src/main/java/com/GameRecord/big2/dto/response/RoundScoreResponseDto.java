@@ -1,6 +1,6 @@
 package com.GameRecord.big2.dto.response;
 
-public class RoundScoreDto {
+public class RoundScoreResponseDto {
 	// 第幾把
 	private int roundNo;
 
