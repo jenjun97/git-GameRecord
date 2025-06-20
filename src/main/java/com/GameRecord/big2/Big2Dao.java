@@ -95,6 +95,27 @@ public class Big2Dao {
 		return query;
 	}
 
+	// query玩家id
+	public List<Integer> queryPlayerId(String deskUuid) {
+		String sql = "select tp.id\r\n" + "from t_players tp\r\n" + "join t_desk td on td.id = tp.fk_desk_id\r\n"
+				+ "where td.desk_uuid = :deskUuid \r\n" + "order by tp.id";
+		Map<String, Object> paramMap = new HashMap();
+		paramMap.put("deskUuid", deskUuid);
+
+		List<Integer> query = jdbc.queryForList(sql, paramMap, Integer.class);
+		return query;
+	}
+
+	// query最後一把的號次
+	public Integer queryLastRoundNum(int playerId) {
+		String sql = "select max(round_no) as lastRoundNum \r\n" + "from t_score ts \r\n"
+				+ "where fk_player_id = :playerId";
+		Map<String, Object> paramMap = new HashMap();
+		paramMap.put("playerId", playerId);
+		Integer lastRoundNum = jdbc.queryForObject(sql, paramMap, Integer.class);
+		return lastRoundNum;
+	}
+
 	// query玩家總數
 	public List<Integer> querySumScore(String deskUuid) {
 		String sql = "SELECT SUM(ts.score) AS total_score\r\n" + "FROM t_score ts\r\n"
@@ -106,20 +127,29 @@ public class Big2Dao {
 		List<Integer> query = jdbc.queryForList(sql, paramMap, Integer.class);
 		return query;
 	}
-	
+
 	// query歷史場次
-	public List<HisDeskResponseDto> queryHisDesk(String kindName){
-		String sql = "SELECT desk_uuid, desk_name, `datetime` \r\n"
-				+ "FROM t_desk\r\n"
-				+ "where kind_name = :kindName \r\n"
-				+ "order by ID;";
+	public List<HisDeskResponseDto> queryHisDesk(String kindName) {
+		String sql = "SELECT desk_uuid, desk_name, `datetime` \r\n" + "FROM t_desk\r\n"
+				+ "where kind_name = :kindName \r\n" + "order by ID;";
 		Map<String, Object> paramMap = new HashMap();
 		paramMap.put("kindName", kindName);
-		
+
 		List<HisDeskResponseDto> query = jdbc.query(sql, paramMap,
 				BeanPropertyRowMapper.newInstance(HisDeskResponseDto.class));
 		return query;
+	}
+
+	// insert分數
+	public void addScore(int roundNo, int fkPlayerId, int score) {
+		String sql = "INSERT INTO t_score\r\n" + "( round_no, fk_player_id, score)\r\n"
+				+ "VALUES(:roundNo, :fkPlayerId, :score);";
+		Map<String, Object> paramMap = new HashMap();
+		paramMap.put("roundNo", roundNo);
+		paramMap.put("fkPlayerId", fkPlayerId);
+		paramMap.put("score", score);
 		
+		jdbc.update(sql, paramMap);
 	}
 
 }

@@ -2,11 +2,14 @@ package com.GameRecord.big2.dto.request;
 
 import java.util.List;
 
-public class AddRecordRequestDto {
+public class AddScoreRequestDto {
+	// 場次代號
 	private String deskUuid;
-	
+
+	// 分數
 	private List<Integer> score;
 
+	// set & get
 	public String getDeskUuid() {
 		return deskUuid;
 	}

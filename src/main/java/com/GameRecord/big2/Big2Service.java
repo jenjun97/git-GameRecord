@@ -7,7 +7,9 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.GameRecord.big2.dto.AddScorePojo;
 import com.GameRecord.big2.dto.request.AddPlayerRequestDto;
+import com.GameRecord.big2.dto.request.AddScoreRequestDto;
 import com.GameRecord.big2.dto.response.HisDeskResponseDto;
 import com.GameRecord.big2.dto.response.RoundScoreResponseDto;
 import com.GameRecord.big2.dto.response.ScoreboardResponseDto;
@@ -22,6 +24,27 @@ public class Big2Service {
 
 	@Autowired
 	Big2Dao big2Dao;
+
+	public void addScore(AddScoreRequestDto addScoreRequestDto) {
+		// 用場次代號取出玩家的id
+		List<Integer> playerIdList = big2Dao.queryPlayerId(addScoreRequestDto.getDeskUuid());
+
+		// 用玩家id取出新的roundNo
+		int nextRoundNum = getNextRoundNum(playerIdList.get(0));
+
+		// 組dto：新的roundNo, 玩家id, score
+		List<AddScorePojo> addScorePojoList = getAddScorePojoList(nextRoundNum, playerIdList,
+				addScoreRequestDto.getScore());
+		// 將dto寫入
+		addScore(addScorePojoList);
+	}
+
+	// insert分數
+	private void addScore(List<AddScorePojo> addScorePojoList) {
+		for (AddScorePojo scorePojo : addScorePojoList) {
+			big2Dao.addScore(scorePojo.roundNo, scorePojo.fkPlayerId, scorePojo.score);
+		}
+	}
 
 	// 新增場次及玩家
 	public String addBig2Game(AddPlayerRequestDto requestDto) throws Exception {
@@ -45,7 +68,7 @@ public class Big2Service {
 	 * @param deskUuid
 	 * @return
 	 */
-	public ScoreboardResponseDto showRecordList(String deskUuid) {
+	public ScoreboardResponseDto showScoreList(String deskUuid) {
 		// 初始化返回物件
 		ScoreboardResponseDto scoreboardResponseDto = new ScoreboardResponseDto();
 
@@ -88,6 +111,44 @@ public class Big2Service {
 		String kindStr = MySourceProperties.get("kind.big2");
 		List<HisDeskResponseDto> queryHisDesk = big2Dao.queryHisDesk(kindStr);
 		return queryHisDesk;
+	}
+
+	/**
+	 * 取得新增比分的pojo
+	 * 
+	 * @param nextRoundNum
+	 * @param playerIdList
+	 * @param screList
+	 * @return
+	 */
+	private List<AddScorePojo> getAddScorePojoList(int nextRoundNum, List<Integer> playerIdList,
+			List<Integer> screList) {
+		// 初始化物件
+		List<AddScorePojo> addScoreDtoList = new ArrayList();
+		for (int i = 0; i < playerIdList.size(); i++) {
+			Integer playerId = playerIdList.get(i);
+			Integer score = screList.get(i);
+			AddScorePojo addScorePojo = new AddScorePojo(nextRoundNum, playerId, score);
+			addScoreDtoList.add(addScorePojo);
+		}
+		return addScoreDtoList;
+	}
+
+	/**
+	 * 取得本次是幾第把的號次
+	 * 
+	 * @param playerId
+	 * @return
+	 */
+	private int getNextRoundNum(int playerId) {
+		Integer lastRoundNum = big2Dao.queryLastRoundNum(playerId);
+		int nextRoundNum = 0;
+		if (lastRoundNum == null) {
+			nextRoundNum = 1;
+		} else {
+			nextRoundNum = lastRoundNum + 1;
+		}
+		return nextRoundNum;
 	}
 
 	/**

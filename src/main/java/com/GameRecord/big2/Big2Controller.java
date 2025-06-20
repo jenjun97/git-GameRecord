@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.GameRecord.big2.dto.request.AddPlayerRequestDto;
-import com.GameRecord.big2.dto.request.AddRecordRequestDto;
+import com.GameRecord.big2.dto.request.AddScoreRequestDto;
 import com.GameRecord.big2.dto.response.HisDeskResponseDto;
 import com.GameRecord.big2.dto.response.ScoreboardResponseDto;
 
@@ -58,22 +58,22 @@ public class Big2Controller {
 			e.printStackTrace();
 			return "big2/error";
 		}
-		return "redirect:/big2/record_list/" + deskUuid;
+		return "redirect:/big2/score_list/" + deskUuid;
 	}
 
 	// 列出現在所有的比分
-	@GetMapping("/record_list/{deskUuid}")
+	@GetMapping("/score_list/{deskUuid}")
 	public String showRecordList(@PathVariable String deskUuid, Model model) {
-		ScoreboardResponseDto scoreboardResponseDto = big2Service.showRecordList(deskUuid);
+		ScoreboardResponseDto scoreboardResponseDto = big2Service.showScoreList(deskUuid);
 		model.addAttribute("scoreboardResponseDto", scoreboardResponseDto);
-		return "big2/record_list";
+		return "big2/score_list";
 	}
 
 	// 增加比分
 	@PostMapping("/add_score")
-	public String addRecord(@ModelAttribute AddRecordRequestDto addRecordRequestDto, Model model) {
-		System.out.println("Big2Controller.addRecord()");
-		return "redirect:/big2/record_list/" + addRecordRequestDto.getDeskUuid();
+	public String addScore(@ModelAttribute AddScoreRequestDto addScoreRequestDto, Model model) {
+		big2Service.addScore(addScoreRequestDto);
+		return "redirect:/big2/score_list/" + addScoreRequestDto.getDeskUuid();
 	}
 
 }
