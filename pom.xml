@@ -90,6 +90,25 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope> <!-- 僅在測試階段使用 -->
 		</dependency>
+		
+		<!-- Spring Data JPA 模組，支援 Entity、Repository、自動實作查詢等功能 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		
+		<!-- Lombok 依賴，用於簡化 Java 程式碼，例如自動產生 Getter/Setter、建構子等 -->
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>1.18.38</version> <!-- 版本號，請根據你實際使用的 lombok.jar 設定，這裡是 1.18.38 -->
+		    <!-- 指定為 provided：
+		         表示這個套件只在「編譯階段」需要，
+		         不會打包進最終的 jar/war 檔中，
+		         因為 lombok 只是編譯階段工具，不需要在執行階段存在。 -->
+		    <scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 	<!-- 專案建置（打包）相關設定 -->

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- 引入共用 head -->
+<head th:replace="~{fragment/head :: head-components}"></head>
+
+<body>
+	<!-- 引入共用 top -->
+	<div th:replace="~{fragment/top :: top-components}"></div>
+	
+
+	<!-- 404 Start -->
+    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <i class="bi bi-exclamation-triangle display-1 text-primary"></i>
+                    <h1 class="display-1">404</h1>
+                    <h1 class="mb-4">頁面錯誤</h1>
+                    <p class="mb-4">請聯絡資訊人員Jun</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 404 End -->
+
+    
+    <!-- 引入共用 foot -->
+	<div th:replace="~{fragment/foot :: foot-components}"></div>
+	
+    <!-- 引入共用 js -->
+	<div th:replace="~{fragment/js :: js-components}"></div>
+
+</body>
+
+</html>

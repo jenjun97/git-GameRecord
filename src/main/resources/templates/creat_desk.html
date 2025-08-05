@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- 引入共用 head -->
+<head th:replace="~{fragment/head :: head-components}"></head>
+
+<body>
+	<!-- 引入共用 top -->
+	<div th:replace="~{fragment/top :: top-components}"></div>
+	
+	<div class="container py-3">
+	
+		<!-- 表單開始，使用 POST -->
+		<form th:action="@{/save_desk}" method="post">
+			<!-- 場名稱 -->
+			<div class="mb-3">
+				<label for="deskName">
+					<h4>輸入遊戲名稱或地點</h4>
+				</label> <input type="text" class="form-control form-control-lg"
+					id="deskName" name="deskName" placeholder="例如小p家，13支" required>
+			</div>
+
+			<!-- 依照 playerCount 顯示玩家名稱欄位 -->
+			<div class="mb-3">
+				<h4>請輸入玩家名稱</h4>
+	
+				<!-- Thymeleaf 迴圈動態產生欄位 -->
+				<div th:each="i : ${#numbers.sequence(1, playerCount)}" class="mb-2">
+					<input type="text"
+						   th:id="'player' + ${i}"
+						   name="playerName"
+						   class="form-control form-control-lg"
+						   th:placeholder="'玩家 ' + ${i} + ' 名稱'"
+						   required>
+				</div>
+			</div>
+	
+			<!-- 送出按鈕 -->
+			<button type="submit" class="btn btn-primary w-100">開局</button>
+		</form>
+	</div>
+
+    
+    <!-- 引入共用 foot -->
+	<div th:replace="~{fragment/foot :: foot-components}"></div>
+	
+    <!-- 引入共用 js -->
+	<div th:replace="~{fragment/js :: js-components}"></div>
+
+</body>
+
+</html>

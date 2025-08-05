@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- 引入共用 head -->
+<head th:replace="~{fragment/head :: head-components}"></head>
+
+<body>
+	<!-- 引入共用 top -->
+	<div th:replace="~{fragment/top :: top-components}"></div>
+
+	<div class="container py-3">
+		<h2>新增遊戲場次</h2>
+	
+		<!-- 表單開始 -->
+		<form th:action="@{/creat_desk}" method="get">
+			<div class="row g-2 align-items-center">
+				<!-- 下拉選單欄位 -->
+				<div class="col-md-8">
+					<select class="form-select" name="playerCount" aria-label="Default select example" required>
+						<option value="" selected disabled>選擇玩家人數</option>
+						<option value="2">2位</option>
+						<option value="3">3位</option>
+						<option value="4">4位</option>
+						<option value="5">5位</option>
+						<option value="6">6位</option>
+					</select>
+				</div>
+	
+				<!-- 按鈕欄位 -->
+				<div class="col-md-4">
+					<button type="submit" class="btn btn-primary w-100">新增</button>
+				</div>
+			</div>
+		</form>
+		<!-- 表單結束 -->
+	</div>
+
+
+	<div class="container py-3">
+		<h2>歷史記錄</h2>
+	</div>
+
+
+	<!-- 引入共用 foot -->
+	<div th:replace="~{fragment/foot :: foot-components}"></div>
+
+	<!-- 引入共用 js -->
+	<div th:replace="~{fragment/js :: js-components}"></div>
+
+</body>
+
+</html>
