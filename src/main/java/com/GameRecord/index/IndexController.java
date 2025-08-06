@@ -9,6 +9,6 @@ public class IndexController {
 	// 導頁
 	@RequestMapping({ "/", "/index", "/index.html" })
 	public String index() {
-		return "redirect:/list_desk";
+		return "redirect:/desk_info";
 	}
 }

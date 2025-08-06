@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.GameRecord.entitys.DeskEntity;
+import com.GameRecord.entitys.PlayerEntity;
+import com.GameRecord.repository.DeskRepository;
+import com.GameRecord.repository.PlayersRepository;
 import com.GameRecord.utils.MyDateTimeUtil;
 
 @Service
@@ -15,19 +19,30 @@ public class DeskService {
 	@Autowired
 	private DeskRepository deskRepository;
 
+	@Autowired
+	private PlayersRepository playersRepository;
+
 	// 儲存新增場次資訊
-	public void saveDesk(String deskName, List<String> playerNameList, Model model) {
+	public String saveDesk(String deskName, List<String> playerNameList) {
 		// 儲存場次
-		DeskEntity entity = new DeskEntity();
-		entity.setUuid(UUID.randomUUID().toString().replace("-", ""));
-		entity.setDeskName(deskName);
-		entity.setDatime(MyDateTimeUtil.getNowTimestamp());
-		// 取出場次id
-		DeskEntity deskId = deskRepository.save(entity);
+		DeskEntity deskEntity = new DeskEntity();
+		deskEntity.setUuid(UUID.randomUUID().toString().replace("-", ""));
+		deskEntity.setDeskName(deskName);
+		deskEntity.setDatime(MyDateTimeUtil.getNowTimestamp());
+
+		// 儲存後取得場次id
+		deskEntity = deskRepository.save(deskEntity);
 
 		// 儲存玩家名稱
+		for (String playerName : playerNameList) {
+			PlayerEntity playerEntity = new PlayerEntity();
+			playerEntity.setPlayerName(playerName);
+			playerEntity.setFkDesk(deskEntity.getId());
+			playersRepository.save(playerEntity);
+		}
 
-		// 取出玩家列表
+		return deskEntity.getUuid();
+
 	}
 
 }

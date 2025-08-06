@@ -1,4 +1,4 @@
-package com.GameRecord.desk;
+package com.GameRecord.entitys;
 
 import java.sql.Timestamp;
 
@@ -10,13 +10,14 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "t_desk") // 對應資料表名稱
+@Table(name = "t_score")
 @Data
-public class DeskEntity {
+public class ScoreEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 對應 AUTO_INCREMENT
 	private Integer id;
-	private String uuid;
-	private String deskName;
+	private Integer round;
+	private Integer fk_players;
+	private Integer score;
 	private Timestamp datime;
 }

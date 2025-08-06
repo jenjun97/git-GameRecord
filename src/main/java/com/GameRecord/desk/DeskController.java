@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class DeskController {
@@ -17,24 +18,26 @@ public class DeskController {
 	private DeskService deskService;
 
 	// 歷史記錄頁
-	@RequestMapping("/list_desk")
-	public String list_desk() {
-		return "list_desk";
+	@RequestMapping("/desk_info")
+	public String deskInfo() {
+		return "desk_info";
 	}
 
 	// 新增場次
-	@GetMapping("creat_desk")
-	public String creatDesk(@RequestParam("playerCount") int playerCount, Model model) {
+	@GetMapping("desk_creat")
+	public String deskCreat(@RequestParam("playerCount") int playerCount, Model model) {
 		model.addAttribute("playerCount", playerCount);
-		return "creat_desk";
+		return "desk_creat";
 	}
 
 	// 儲存新增場次資訊
-	@PostMapping("save_desk")
-	public String saveDesk(@RequestParam("deskName") String deskName,
-			@RequestParam("playerName") List<String> playerNameList, Model model) {
-		deskService.saveDesk(deskName, playerNameList, model);
-		return "list_desk";
+	@PostMapping("desk_save")
+	public String deskSave(@RequestParam("deskName") String deskName,
+			@RequestParam("playerName") List<String> playerNameList, RedirectAttributes redirectAttributes) {
+		// 傳遞場次uuid
+		String deskUuid = deskService.saveDesk(deskName, playerNameList);
+		redirectAttributes.addFlashAttribute("deskUuid", deskUuid);
+		return "redirect:/score_new";
 	}
 
 }
