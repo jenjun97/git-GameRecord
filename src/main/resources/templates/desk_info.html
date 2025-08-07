@@ -23,6 +23,8 @@
 						<option value="4">4位</option>
 						<option value="5">5位</option>
 						<option value="6">6位</option>
+						<option value="7">7位</option>
+						<option value="8">8位</option>
 					</select>
 				</div>
 	
@@ -38,6 +40,30 @@
 
 	<div class="container py-3">
 		<h2>歷史記錄</h2>
+		
+		<!-- 從後端傳回的deskInfoList變成欄位顯示出來 -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">遊戲場次編號</th>
+					<th scope="col">代號</th>
+					<th scope="col">場名</th>
+					<th scope="col">建立時間</th>
+					<th scope="col">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="deskInfo : ${deskInfoList}">
+					<td th:text="${deskInfo.id}"></td>
+					<td th:text="${deskInfo.uuid}"></td>
+					<td th:text="${deskInfo.deskName}"></td>
+					<td th:text="${#dates.format(deskInfo.datime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+					<td>
+						<a th:href="@{/desk_info/{id}(id=${deskInfo.id})}" class="btn btn-info">查看詳情</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 
 

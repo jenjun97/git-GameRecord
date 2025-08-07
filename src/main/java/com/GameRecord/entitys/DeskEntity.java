@@ -15,8 +15,8 @@ import lombok.Data;
 public class DeskEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 對應 AUTO_INCREMENT
-	private Integer id;
-	private String uuid;
-	private String deskName;
-	private Timestamp datime;
+	public Integer id;
+	public String uuid;
+	public String deskName;
+	public Timestamp datime;
 }

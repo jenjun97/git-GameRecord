@@ -21,6 +21,13 @@ public class DeskService {
 
 	@Autowired
 	private PlayersRepository playersRepository;
+	
+	public Model queryDeskInfo(Model model) {
+		// 查詢所有場次
+		List<DeskEntity> deskInfoList = deskRepository.findAll();
+		model.addAttribute("deskInfoList", deskInfoList);
+		return model;
+	}
 
 	// 儲存新增場次資訊
 	public String saveDesk(String deskName, List<String> playerNameList) {

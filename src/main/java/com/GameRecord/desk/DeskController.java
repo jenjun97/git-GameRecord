@@ -19,7 +19,9 @@ public class DeskController {
 
 	// 歷史記錄頁
 	@RequestMapping("/desk_info")
-	public String deskInfo() {
+	public String deskInfo( Model model) {
+		// 查詢所有場次
+		model = deskService.queryDeskInfo(model);
 		return "desk_info";
 	}
 
