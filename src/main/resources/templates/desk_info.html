@@ -4,6 +4,18 @@
 <!-- 引入共用 head -->
 <head th:replace="~{fragment/head :: head-components}"></head>
 
+
+<style>
+/* 手機小畫面時調小字體與輸入欄、按鈕、欄位 */
+@media ( max-width : 768px) {
+}
+
+a, button {
+	white-space: nowrap;
+}
+</style>
+
+
 <body>
 	<!-- 引入共用 top -->
 	<div th:replace="~{fragment/top :: top-components}"></div>
@@ -45,21 +57,27 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th scope="col">遊戲場次編號</th>
-					<th scope="col">代號</th>
+					<th scope="col">編號</th>
 					<th scope="col">場名</th>
 					<th scope="col">建立時間</th>
 					<th scope="col">操作</th>
+					<th scope="col"></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="deskInfo : ${deskInfoList}">
 					<td th:text="${deskInfo.id}"></td>
-					<td th:text="${deskInfo.uuid}"></td>
 					<td th:text="${deskInfo.deskName}"></td>
 					<td th:text="${#dates.format(deskInfo.datime, 'yyyy-MM-dd HH:mm:ss')}"></td>
 					<td>
-						<a th:href="@{/desk_info/{id}(id=${deskInfo.id})}" class="btn btn-info">查看詳情</a>
+						<a th:href="@{/score_info/{uuid}(uuid=${deskInfo.uuid})}" 
+							class="btn btn-info text-white">繼續</a>
+					</td>
+					<td>
+					    <form th:action="@{/desk_delete/{uuid}(uuid=${deskInfo.uuid})}" method="post" 
+					          onsubmit="return confirm('確定要刪除嗎？');">
+					        <button type="submit" class="btn btn-secondary text-white">刪除</button>
+					    </form>
 					</td>
 				</tr>
 			</tbody>

@@ -23,8 +23,8 @@ public class DeskService {
 	private PlayersRepository playersRepository;
 	
 	public Model queryDeskInfo(Model model) {
-		// 查詢所有場次
-		List<DeskEntity> deskInfoList = deskRepository.findAll();
+		// 查詢所有未刪除場次
+		List<DeskEntity> deskInfoList = deskRepository.findByDel(0);
 		model.addAttribute("deskInfoList", deskInfoList);
 		return model;
 	}

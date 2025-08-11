@@ -4,18 +4,137 @@
 <!-- 引入共用 head -->
 <head th:replace="~{fragment/head :: head-components}"></head>
 
+<style>
+/* 手機小畫面時調小字體與輸入欄、按鈕、欄位 */
+@media ( max-width : 768px) {
+	input[type="tel"] {
+		font-size: 12px;
+		padding: 2px;
+	}
+	th, td {
+		font-size: 12px;
+		padding: 4px;
+	}
+
+	/* 按鈕縮小 */
+	button[type="submit"] {
+		font-size: 16px;
+		padding: 8px 8px;
+		white-space: nowrap;
+	}
+
+	/* 玩家名稱（表頭文字）額外設定，確保不擠爆、換行 */
+	th.player-name {
+		font-size: 12px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	th, td, th.player-name, input[type="tel"] {
+		font-size: 16px;
+	}
+}
+
+button {
+	white-space: nowrap;
+}
+</style>
+
+
+
 <body>
 	<!-- 引入共用 top -->
 	<div th:replace="~{fragment/top :: top-components}"></div>
-	
+
+	<!-- 新增失分紀錄 -->
 	<div class="container py-3">
-		
+		<h5>新增失分</h5>
+
+		<!-- Bootstrap RWD 表格容器 -->
+		<div class="table-responsive">
+			<form th:action="@{/add_score}" method="post">
+				<input type="hidden" name="deskUuid" th:value="${deskUuid}" />
+
+				<table class="table table-bordered align-middle text-center mb-0">
+					<thead>
+						<tr>
+							<th class="text-nowrap">項目</th>
+							<th th:each="player : ${playerEntityList}"
+								class="text-nowrap player-name" th:text="${player.playerName}">玩家</th>
+							<th class="text-nowrap">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- 顯示總分 -->
+						<tr th:if="${totalScoresList != null and totalScoresList.size() > 0}">
+							<td class="text-nowrap">總分</td>
+							<td th:each="totalScores : ${totalScoresList}" th:text="${totalScores}">0</td>
+							
+							<!-- 顯示共幾局 -->
+							<td th:text="'共' + ${lastRound} + '局'"></td>
+						</tr>
+						<!-- 輸入失分 -->
+						<tr>
+							<td class="text-nowrap">失分</td>
+							<td th:each="player : ${playerEntityList}">
+								<input type="hidden" name="playerId" th:value="${player.id}" /> 
+								<input type="tel" class="form-control form-control-sm" placeholder="輸入" name="score" />
+							</td>
+							<td>
+								<button type="submit" class="btn btn-info btn-sm text-white">送出</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
+
+		<h6 class="mt-2 text-danger" th:text="${msg}"></h6>
+		<h6 class="mt-2 text-primary">只要輸入失分，得分不用輸入</h6>
+		<h6 class="mt-2 text-primary">例輸12分，請輸入12，不是-12</h6>
 	</div>
-    
-    <!-- 引入共用 foot -->
-	<div th:replace="~{fragment/foot :: foot-components}"></div>
+
+	<!-- 歷史分數 -->
+	<div class="container py-3">
+	    <h5>歷史分數</h5>
 	
-    <!-- 引入共用 js -->
+	    <div class="table-responsive">
+	        <table class="table table-bordered text-center align-middle">
+	            <thead>
+	                <tr>
+	                    <th class="text-nowrap">局數</th>
+	                    <th th:each="player : ${playerEntityList}" class="text-nowrap" th:text="${player.playerName}">玩家名稱</th>
+	                    <th class="text-nowrap">操作</th>
+	                </tr>
+	            </thead>
+	            <tbody th:if="${scoreList != null and scoreList.size() > 0 and scoreList[0].size() > 0}">
+                    <!-- 顯示每一局的分數 -->
+	                <tr th:each="scoreRow, rowStat : ${scoreList}">
+	                    <!-- 顯示第幾次 round -->
+	                    <td th:text="${rowStat.index + 1}">1</td>
+	
+	                    <!-- 顯示每位玩家該 round 的分數 -->
+	                    <td th:each="score : ${scoreRow}" th:text="${score}">0</td>
+	
+	                    <!-- 修改按鈕（可自行設計要導去哪） -->
+	                    <td>
+	                        <form th:action="@{/edit_score}" method="get">
+	                            <input type="hidden" name="deskUuid" th:value="${deskUuid}" />
+	                            <input type="hidden" name="round" th:value="${rowStat.index + 1}" />
+	                            <button type="submit" class="btn btn-warning btn-sm">修改</button>
+	                        </form>
+	                    </td>
+	                </tr>
+	            </tbody>
+	        </table>
+	    </div>
+	</div>
+
+
+	<!-- 引入共用 foot -->
+	<div th:replace="~{fragment/foot :: foot-components}"></div>
+
+	<!-- 引入共用 js -->
 	<div th:replace="~{fragment/js :: js-components}"></div>
 
 </body>

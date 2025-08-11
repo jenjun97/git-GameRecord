@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +20,7 @@ public class DeskController {
 
 	// 歷史記錄頁
 	@RequestMapping("/desk_info")
-	public String deskInfo( Model model) {
+	public String deskInfo(Model model) {
 		// 查詢所有場次
 		model = deskService.queryDeskInfo(model);
 		return "desk_info";
@@ -28,6 +29,7 @@ public class DeskController {
 	// 新增場次
 	@GetMapping("desk_creat")
 	public String deskCreat(@RequestParam("playerCount") int playerCount, Model model) {
+		// 不用做處理，直接將人數傳入前端
 		model.addAttribute("playerCount", playerCount);
 		return "desk_creat";
 	}
@@ -38,8 +40,20 @@ public class DeskController {
 			@RequestParam("playerName") List<String> playerNameList, RedirectAttributes redirectAttributes) {
 		// 傳遞場次uuid
 		String deskUuid = deskService.saveDesk(deskName, playerNameList);
+		// 儲存成功後，將 deskUuid 加入到 RedirectAttributes 中
 		redirectAttributes.addFlashAttribute("deskUuid", deskUuid);
-		return "redirect:/score_new";
+		
+		return "redirect:/score_info/" + deskUuid;
 	}
+	
+	// 刪除場次
+	@PostMapping("desk_delete/{deskUuid}")
+	public String deskDelete(@PathVariable("deskUuid") String deskUuid) {
+		// 刪除場次
+//		deskService.deleteDesk(deskUuid);
+
+		return "redirect:/desk_info";
+	}
+	
 
 }

@@ -19,4 +19,5 @@ public class DeskEntity {
 	public String uuid;
 	public String deskName;
 	public Timestamp datime;
+	public int del;
 }

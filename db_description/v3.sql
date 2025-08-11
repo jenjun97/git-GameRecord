@@ -8,8 +8,10 @@ CREATE TABLE `t_desk` (
   `uuid` varchar(255) DEFAULT NULL,
   `desk_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `datime` datetime DEFAULT NULL,
+  `del` int DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 -- games_score.t_players definition
 CREATE TABLE `t_players` (
@@ -17,7 +19,7 @@ CREATE TABLE `t_players` (
   `player_name` varchar(255) DEFAULT NULL,
   `fk_desk` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 -- games_score.t_score definition

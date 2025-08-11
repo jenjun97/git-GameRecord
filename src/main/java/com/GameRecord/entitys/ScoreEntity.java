@@ -2,6 +2,7 @@ package com.GameRecord.entitys;
 
 import java.sql.Timestamp;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +18,8 @@ public class ScoreEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 對應 AUTO_INCREMENT
 	private Integer id;
 	private Integer round;
-	private Integer fk_players;
+	@Column(name = "fk_players")
+	private Integer fkPlayers;
 	private Integer score;
 	private Timestamp datime;
 }
