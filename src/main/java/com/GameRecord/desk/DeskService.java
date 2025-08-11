@@ -21,7 +21,7 @@ public class DeskService {
 
 	@Autowired
 	private PlayersRepository playersRepository;
-	
+
 	public Model queryDeskInfo(Model model) {
 		// 查詢所有未刪除場次
 		List<DeskEntity> deskInfoList = deskRepository.findByDel(0);
@@ -49,7 +49,11 @@ public class DeskService {
 		}
 
 		return deskEntity.getUuid();
+	}
 
+	// 刪除場次
+	public void deskDelete(String deskUuid) {
+		deskRepository.deleteByUuid(deskUuid);
 	}
 
 }

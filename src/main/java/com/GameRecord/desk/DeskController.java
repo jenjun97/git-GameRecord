@@ -50,7 +50,7 @@ public class DeskController {
 	@PostMapping("desk_delete/{deskUuid}")
 	public String deskDelete(@PathVariable("deskUuid") String deskUuid) {
 		// 刪除場次
-//		deskService.deleteDesk(deskUuid);
+		deskService.deskDelete(deskUuid);
 
 		return "redirect:/desk_info";
 	}

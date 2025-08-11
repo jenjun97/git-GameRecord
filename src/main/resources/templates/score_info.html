@@ -90,8 +90,8 @@ button {
 		</div>
 
 		<h6 class="mt-2 text-danger" th:text="${msg}"></h6>
-		<h6 class="mt-2 text-primary">只要輸入失分，得分不用輸入</h6>
-		<h6 class="mt-2 text-primary">例輸12分，請輸入12，不是-12</h6>
+		<h6 class="mt-2 text-primary">只要輸入輸分，贏分不用輸入</h6>
+		<h6 class="mt-2 text-primary">例如輸12分，請輸入12，不是-12</h6>
 	</div>
 
 	<!-- 歷史分數 -->
@@ -111,14 +111,14 @@ button {
                     <!-- 顯示每一局的分數 -->
 	                <tr th:each="scoreRow, rowStat : ${scoreList}">
 	                    <!-- 顯示第幾次 round -->
-	                    <td th:text="${rowStat.index + 1}">1</td>
+	                    <td th:text="${rowStat.index + 1}">0</td>
 	
 	                    <!-- 顯示每位玩家該 round 的分數 -->
 	                    <td th:each="score : ${scoreRow}" th:text="${score}">0</td>
 	
-	                    <!-- 修改按鈕（可自行設計要導去哪） -->
+	                    <!-- 修改按鈕 -->
 	                    <td>
-	                        <form th:action="@{/edit_score}" method="get">
+	                        <form th:action="@{/score_edit}" method="post">
 	                            <input type="hidden" name="deskUuid" th:value="${deskUuid}" />
 	                            <input type="hidden" name="round" th:value="${rowStat.index + 1}" />
 	                            <button type="submit" class="btn btn-warning btn-sm">修改</button>

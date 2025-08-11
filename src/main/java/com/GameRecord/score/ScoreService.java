@@ -147,7 +147,8 @@ public class ScoreService {
 		// 驗證score只能有1個null, 且一定要有1個null, 且其他全為正數
 		boolean validateScoreCorrect = validateScoreListCorrect(scoreList);
 		if (!validateScoreCorrect) {
-			return model.addAttribute("msg", "輸入失分有錯，請重新輸入"); // 返回錯誤訊息
+			model.addAttribute("msg", "輸入輸分有錯，請重新輸入"); // 返回錯誤訊息
+			return model;
 		}
 
 		// 計算得分並替換null值
