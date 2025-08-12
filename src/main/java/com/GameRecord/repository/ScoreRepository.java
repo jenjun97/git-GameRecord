@@ -46,5 +46,21 @@ public interface ScoreRepository extends JpaRepository<ScoreEntity, Integer> {
 			+ " order by tp.id"
 			, nativeQuery = true)
 	public List<List<Integer>> findTotalScore(@Param("playerIds")List<Integer> playerIds);
+	
+	// 查詢單局記分資料
+	@Query(value = 
+            "select \r\n"
+            + "	tp.id as playerId \r\n"
+            + "	,ts.score \r\n"
+            + " from t_players tp \r\n"
+            + " join t_score ts on ts.fk_players = tp.id \r\n"
+            + " where \r\n"
+            + " 	ts.round = :round \r\n"
+            + "		and tp.id in :playerIds\r\n"
+            + " order by tp.id, ts.round"
+            , nativeQuery = true)
+	public List<List<Integer>> queryScoreByRoundAndPlayerIds(@Param("round") int round, @Param("playerIds") List<Integer> playerIds);
 
+	 // 依照 round 與 fkPlayers 查詢符合的分數資料
+    public List<ScoreEntity> findByRoundAndFkPlayers(Integer round, Integer fkPlayers);
 }

@@ -46,9 +46,9 @@ button {
 	<!-- 引入共用 top -->
 	<div th:replace="~{fragment/top :: top-components}"></div>
 
-	<!-- 新增失分紀錄 -->
+	<!-- 新增輸分紀錄 -->
 	<div class="container py-3">
-		<h5>新增失分</h5>
+		<h5>新增輸分</h5>
 
 		<!-- Bootstrap RWD 表格容器 -->
 		<div class="table-responsive">
@@ -73,9 +73,9 @@ button {
 							<!-- 顯示共幾局 -->
 							<td th:text="'共' + ${lastRound} + '局'"></td>
 						</tr>
-						<!-- 輸入失分 -->
+						<!-- 輸入輸分 -->
 						<tr>
-							<td class="text-nowrap">失分</td>
+							<td class="text-nowrap">輸分</td>
 							<td th:each="player : ${playerEntityList}">
 								<input type="hidden" name="playerId" th:value="${player.id}" /> 
 								<input type="tel" class="form-control form-control-sm" placeholder="輸入" name="score" />

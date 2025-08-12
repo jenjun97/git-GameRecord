@@ -43,9 +43,24 @@ public class ScoreController {
 
 	// 修改分數
 	@PostMapping("score_edit")
-	public String scoreEdit(@RequestParam("deskUuid") String deskUuid, @RequestParam("round") int round) {
-		 System.out.println(deskUuid);
-		 System.out.println(round);
+	public String scoreEdit(@RequestParam("deskUuid") String deskUuid, @RequestParam("round") int round, Model model) {
+		model = scoreService.queryScoreByRound(deskUuid, round, model);
+		return "score_edit";
+	}
+
+	// 儲存修改分數
+	@PostMapping("score_edit_save")
+	public String scoreEditSave(@RequestParam("deskUuid") String deskUuid, @RequestParam("round") int round,
+			@RequestParam("playerId") List<Integer> playerIds, @RequestParam("newScore") List<Integer> newScoreList,
+			Model model) {
+		String msg = scoreService.scoreEditSave(deskUuid, round, playerIds, newScoreList, model);
+		if (msg != null) {
+			// 如果有錯誤訊息，則將錯誤訊息添加到模型中
+			model.addAttribute("msg", msg);
+			model = scoreService.queryScoreByRound(deskUuid, round, model);
+			return "score_edit";
+		}
+		
 		return "redirect:/score_info/" + deskUuid;
 	}
 

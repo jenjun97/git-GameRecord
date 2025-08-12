@@ -29,7 +29,79 @@ public class ScoreService {
 	@Autowired
 	private ScoreRepository scoreRepository;
 
-	// 組合記分表的資料
+	// 儲存修改分數
+	public String scoreEditSave(String deskUuid, int round, List<Integer> playerIds, List<Integer> newScoreList,
+			Model model) {
+		// 驗證player id不為空
+		validatePlayerIdNotNull(playerIds);
+
+		// 驗證玩家id是該uuid的場次
+		validatePlayerIdInDesk(deskUuid, playerIds);
+
+		// 驗證score只能有1個null, 且其他全為正數
+		boolean validateScoreCorrect = validateScoreListCorrect(newScoreList);
+		if (!validateScoreCorrect) {
+			// 返回錯誤訊息
+			return "輸入輸分有錯，請重新輸入";
+		}
+
+		// 計算得分並替換null值
+		newScoreList = countWinScore(newScoreList);
+
+		// 驗證玩家數量與分數數量匹配
+		if (playerIds.size() != newScoreList.size()) {
+			throw new IllegalArgumentException("玩家數量與分數數量不匹配");
+		}
+
+		// 上面驗證都沒有問題，則新增分數到資料庫
+		for (int i = 0; i < playerIds.size(); i++) {
+			Integer playerId = playerIds.get(i);
+			Integer newScore = newScoreList.get(i);
+			// 更新分數到資料庫
+			ScoreEntity scoreEntity = scoreRepository.findByRoundAndFkPlayers(round, playerId).get(0);
+			scoreEntity.setScore(newScore);
+			scoreRepository.save(scoreEntity);
+		}
+
+		// 返回null表示沒有錯誤
+		return null;
+	}
+
+	// 查詢單局記分資料
+	public Model queryScoreByRound(String deskUuid, int round, Model model) {
+		// 要修改的局數
+		model.addAttribute("round", round);
+
+		// 取得deskId
+		DeskEntity deskEntity = deskRepository.findByUuid(deskUuid);
+		Integer deskId = deskEntity.getId();
+		model.addAttribute("deskUuid", deskUuid);
+
+		// 取得玩家資料
+		List<PlayerEntity> playerEntityList = playersRepository.findByFkDeskOrderByIdAsc(deskId);
+		model.addAttribute("playerEntityList", playerEntityList);
+
+		// 取得玩家id列表
+		List<Integer> playerIds = playerEntityList.stream().map(PlayerEntity::getId).toList();
+
+		// 取得單局分數記錄資料
+		List<List<Integer>> scoreList = scoreRepository.queryScoreByRoundAndPlayerIds(round, playerIds);
+		List<Integer> oldScoreList = new ArrayList<>();
+		// 轉置資料
+		for (PlayerEntity playerEntity : playerEntityList) {
+			Integer playerId = playerEntity.getId();
+			for (List<Integer> row : scoreList) {
+				if (row.get(0).equals(playerId)) {
+					oldScoreList.add(row.get(1)); // 取得該玩家的分數, 將分數加入列表
+					break;
+				}
+			}
+		}
+		model.addAttribute("oldScoreList", oldScoreList);
+		return model;
+	}
+
+	// 查詢指定場次記分表的資料
 	public Model queryScoreInfo(String deskUuid, Model model) {
 		// 取得deskId
 		DeskEntity deskEntity = deskRepository.findByUuid(deskUuid);
@@ -39,7 +111,7 @@ public class ScoreService {
 		// 取得玩家資料
 		List<PlayerEntity> playerEntityList = playersRepository.findByFkDeskOrderByIdAsc(deskId);
 		model.addAttribute("playerEntityList", playerEntityList);
-		
+
 		// 取得每位玩家的總分
 		List<Integer> totalScoresList = queryTotalScores(playerEntityList);
 		model.addAttribute("totalScoresList", totalScoresList);
@@ -47,14 +119,14 @@ public class ScoreService {
 		// 取得最後局數
 		Integer lastRound = queryLastRound(playerEntityList);
 		model.addAttribute("lastRound", lastRound);
-		
+
 		// 取得分記錄資料
 		List<List<Integer>> scoreList = queryHisScores(playerEntityList, lastRound);
 		model.addAttribute("scoreList", scoreList);
 
 		return model;
 	}
-	
+
 	// 取得最後局數
 	private Integer queryLastRound(List<PlayerEntity> playerEntityList) {
 		// 取得第一位玩家的id
@@ -72,11 +144,11 @@ public class ScoreService {
 	private List<Integer> queryTotalScores(List<PlayerEntity> playerEntityList) {
 		// 初始化返回物件
 		List<Integer> totalScoresList = new ArrayList<>();
-	    // 取得玩家id列表
+		// 取得玩家id列表
 		List<Integer> playIdList = playerEntityList.stream().map(PlayerEntity::getId).toList();
 		// 取得每位玩家的總分
 		List<List<Integer>> totalScoreList = scoreRepository.findTotalScore(playIdList);
-		
+
 		for (PlayerEntity playerEntity : playerEntityList) {
 			Integer playerId = playerEntity.getId();
 			for (List<Integer> row : totalScoreList) {
@@ -102,7 +174,7 @@ public class ScoreService {
 		List<List<Integer>> scoreList = new ArrayList<>();
 
 		// 防呆, 如果沒有局數或分數資料，直接返回空列表
-		if ( lastRound == 0 || queryScoreList.size() == 0) {
+		if (lastRound == 0 || queryScoreList.size() == 0) {
 			scoreList.add(new ArrayList());
 			return scoreList;
 		}

@@ -8,8 +8,50 @@
 	<!-- 引入共用 top -->
 	<div th:replace="~{fragment/top :: top-components}"></div>
 	
+	<!-- 新增失分紀錄 -->
 	<div class="container py-3">
-		<h2>sample</h2>
+		<h5>修改輸分</h5>
+
+		<!-- Bootstrap RWD 表格容器 -->
+		<div class="table-responsive">
+			<form th:action="@{/score_edit_save}" method="post">
+				<input type="hidden" name="deskUuid" th:value="${deskUuid}" />
+				<input type="hidden" name="round" th:value="${round}" />
+
+				<table class="table table-bordered align-middle text-center mb-0">
+					<thead>
+						<tr>
+							<th class="text-nowrap">項目</th>
+							<th th:each="player : ${playerEntityList}"
+								class="text-nowrap player-name" th:text="${player.playerName}">玩家</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- 舊輸分資料 -->
+						<tr>
+							<td class="text-nowrap">原輸分</td>
+							<td th:each="oldScore : ${oldScoreList}">
+                                <span th:text="${oldScore}">0</span>
+							</td>
+						</tr>
+							
+						<!-- 新輸分資料 -->
+						<tr>
+							<td class="text-nowrap">新輸分</td>
+							<td th:each="player : ${playerEntityList}">
+								<input type="hidden" name="playerId" th:value="${player.id}" /> 
+								<input type="tel" class="form-control form-control-sm" placeholder="輸入" name="newScore" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+						<button type="submit" class="btn btn-info w-100 text-white">送出</button>
+			</form>
+		</div>
+
+		<h6 class="mt-2 text-danger" th:text="${msg}"></h6>
+		<h6 class="mt-2 text-primary">只要輸入輸分，贏分不用輸入</h6>
+		<h6 class="mt-2 text-primary">例如輸12分，請輸入12，不是-12</h6>
 	</div>
     
     <!-- 引入共用 foot -->
