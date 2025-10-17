@@ -1,0 +1,2 @@
+指定環境版本參數
+--spring.profiles.active=dev
