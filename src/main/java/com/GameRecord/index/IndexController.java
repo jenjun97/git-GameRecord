@@ -11,4 +11,9 @@ public class IndexController {
 	public String index() {
 		return "redirect:/desk_info";
 	}
+	// 導頁
+	@RequestMapping( "/game_info")
+	public String gameInfo() {
+		return "redirect:/game_info";
+	}
 }

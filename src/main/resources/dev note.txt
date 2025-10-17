@@ -1,2 +1,17 @@
 指定環境版本參數
 --spring.profiles.active=dev
+
+
+game info
+
+ten3 desk
+ten3 creat
+ten3 score edit
+ten3 score info
+
+big2 info
+big2 desk
+big2 creat
+big2 score edit
+big2 score info
+
