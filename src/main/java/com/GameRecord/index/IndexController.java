@@ -9,11 +9,7 @@ public class IndexController {
 	// 導頁
 	@RequestMapping({ "/", "/index", "/index.html" })
 	public String index() {
-		return "redirect:/desk_info";
-	}
-	// 導頁
-	@RequestMapping( "/game_info")
-	public String gameInfo() {
-		return "redirect:/game_info";
+//		return "redirect:/game_info";
+		return "games_index";
 	}
 }

@@ -2,16 +2,23 @@
 --spring.profiles.active=dev
 
 
-game info
+games_index >> 遊戲選擇
 
-ten3 desk
-ten3 creat
-ten3 score edit
-ten3 score info
 
-big2 info
-big2 desk
-big2 creat
-big2 score edit
-big2 score info
+big2_index >> 歷史列表、新遊戲
+big2_creat >> 新增場次
+big2_score >> 分數記錄
+big2_edit >> 分數修改
 
+ten3_index >> 歷史列表、新遊戲
+ten3_creat >> 新增場次
+ten3_score >> 分數記錄
+ten3_edit >> 分數修改
+
+
+// ------------------- 現況
+
+desk_info >> 歷史列表
+desk_creat >> 新增場次
+score_info >> 分數記錄
+score_edit >> 分數修改

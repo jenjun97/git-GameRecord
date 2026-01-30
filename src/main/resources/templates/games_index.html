@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- 引入共用 head -->
+<head th:replace="~{fragment/head :: head-components}"></head>
+
+<body>
+	<!-- 引入共用 top -->
+	<div th:replace="~{fragment/top :: top-components}"></div>
+
+
+	<div class="container py-3">
+		<h2>選擇遊戲記分類型</h2>
+	</div>
+	
+	<!-- Service Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="service-item text-center pt-3">
+                        <div class="p-4">
+                            <img th:src="@{/img/big2.png}" alt="大老二" class="img-fluid mb-4" style="max-width:80px;">
+                            <h5 class="mb-3">大老二</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
+                    <div class="service-item text-center pt-3">
+                        <div class="p-4">
+                            <img th:src="@{/img/ten3.jpg}" alt="大老二" class="img-fluid mb-4" style="max-width:80px;">
+                            <h5 class="mb-3">13張</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Service End -->
+	
+
+
+	<!-- 引入共用 foot -->
+	<div th:replace="~{fragment/foot :: foot-components}"></div>
+
+	<!-- 引入共用 js -->
+	<div th:replace="~{fragment/js :: js-components}"></div>
+
+</body>
+
+</html>
